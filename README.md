@@ -1,38 +1,45 @@
 # AsyncState
 
-## Для чего
-Применяется для доступа к асинхронным данным. Например есть данные, которые периодически могут обновляться с сервера. Может так случиться, что данные потребуются в момент их обновления и пользователь получит устаревшие данные. Используя данный механизм такого не произодет.
+## When to use
+If you need to receive data that changes asynchronously and be sure that it is up to date, then this can help you in such cases.
 
-## Использование
-1. Инициализируем класс со значением по умолчанию
+## Methods
+* `.wait<Int>`: signals the start of data refresh. The argument passes the maximum time to complete the update in milliseconds, after which the process is considered to have failed
+* `.set<Fn>`: allows you to update the data in the object. The passed callback receives existing data and should return updated data
+* `.result<Any>`: Reports the successful completion of the update. The argument sets the data to be retrieved from the object
+* `.fail<Any>`: Reports that the update failed. The argument sets the data to be retrieved from the object
+* `.then<Fn><Fn>`: Get data from an object. The first transmitted callback is triggered when the update is successful, the second is triggered when the update is unsuccessful.
+
+## Usage
+1. Initialize the class with default data and the maximum possible duration of the operation
 ```
-const process = new AsyncState({ id: Date.now() })
+const process = new AsyncState({ id: Date.now() }, 5000)
 ```
 
-2. Указываем что идет обновление данных при помощи метода `.wait`
-3. Устанавливаем промежуточное значение методом `.set` (может понадобиться если в коде идет обращение к объекту до вызова метода `.wait`, но его значение нельзя установить при инициализации)
-4. Сохраняем обновленные данные и сигнализируем что обновление закончено методом `.result`
-5. Если необходимо выбрасываем исключение методом `.fail`
+2. We inform about the start of the update using the `.wait` method
+3. Set the intermediate value using the `.set` method (may be necessary if the code is accessing an object before calling the `.wait` method, but its value cannot be set during initialization)
+4. We save the updated data and signal that the update is completed using the `.result` method
+5. If necessary, throw an exception using the `.fail` method
 ```
 try {
-    process.wait();
-    const data = await updataData();
-    process.result(data);
+  process.wait();
+  const data = await updataData();
+  process.result(data);
 } catch (err) {
-    process.fail(err);
+  process.fail(err);
 }
 
 ```
 
-6. Получаем данные асинхронно:
+6. Receive data asynchronously:
 ```
-const getData = async () => {
-    try {
-      const data = await process;
-      return { success: true, data };
-    } catch (err) {
-      console.error(err)
-      return { success: false, data: null };
-    }
+const getData = async() => {
+  try {
+    const data = await process;
+    return { success: true, data };
+  } catch (err) {
+    console.error(err)
+    return { success: false, data: null, message: err.message };
+  }
 };
 ```
