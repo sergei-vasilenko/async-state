@@ -14,8 +14,8 @@ class AsyncState {
     return this.#value.then(onFulfilled, onRejected);
   }
 
-  set(callback) {
-    this.#value.then((data) => callback(data));
+  update(callback) {
+    this.#value = this.#value.then((data) => callback(data));
   }
 
   wait(maxDuration) {

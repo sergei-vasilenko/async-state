@@ -5,10 +5,10 @@ If you need to receive data that changes asynchronously and be sure that it is u
 
 ## Methods
 * `.wait<Int>`: signals the start of data refresh. The argument passes the maximum time to complete the update in milliseconds, after which the process is considered to have failed
-* `.set<Fn>`: allows you to update the data in the object. The passed callback receives existing data and should return updated data
-* `.result<Any>`: Reports the successful completion of the update. The argument sets the data to be retrieved from the object
-* `.fail<Any>`: Reports that the update failed. The argument sets the data to be retrieved from the object
-* `.then<Fn><Fn>`: Get data from an object. The first transmitted callback is triggered when the update is successful, the second is triggered when the update is unsuccessful.
+* `.update<Fn>`: allows you to update the data in the object. The passed callback receives existing data and should return updated data
+* `.result<Any>`: signals the successful completion of the update. The argument sets the data to be retrieved from the object
+* `.fail<Any>`: signals that the update failed. The argument sets the data to be retrieved from the object
+* `.then<Fn><Fn>`: get data from an object. The first transmitted callback is triggered when the update is successful, the second is triggered when the update is unsuccessful.
 
 ## Usage
 1. Initialize the class with default data and the maximum possible duration of the operation
