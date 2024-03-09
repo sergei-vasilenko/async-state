@@ -1,7 +1,7 @@
 # AsyncState
 
 ## When to use
-If you need to receive data that changes asynchronously and be sure that it is up to date, then this can help you in such cases.
+If you have a task that updates state in the background and you might need to access the state while updating, this tool can help you.
 
 ## Methods
 * `.wait<Int>`: signals the start of data refresh. The argument passes the maximum time to complete the update in milliseconds, after which the process is considered to have failed
