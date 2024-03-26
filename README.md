@@ -5,6 +5,7 @@ If you have a task that updates state in the background and you might need to ac
 
 ## Methods
 * `.wait<Int>`: signals the start of data refresh. The argument passes the maximum time to complete the update in milliseconds, after which the process is considered to have failed
+* `.set<Any>`: allows you to set the data in the object
 * `.update<Fn>`: allows you to update the data in the object. The passed callback receives existing data and should return updated data
 * `.result<Any>`: signals the successful completion of the update. The argument sets the data to be retrieved from the object
 * `.fail<Any>`: signals that the update failed. The argument sets the data to be retrieved from the object
